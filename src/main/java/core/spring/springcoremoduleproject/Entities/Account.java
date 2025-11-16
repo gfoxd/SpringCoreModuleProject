@@ -1,31 +1,21 @@
 package core.spring.springcoremoduleproject.Entities;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-@Component
-@Scope("prototype")
 public class Account {
 
     private final int id;
-    private static int idQuantity = 0;
-
     private final int userId;
-
     private double moneyAmount;
 
-    public Account(int userId) {
-        this.id = ++idQuantity;
-        this.userId = userId;
-        this.moneyAmount = 0;
-    }
-
-    public Account(int userId, double moneyAmount) {
-        this.id = ++idQuantity;
+    public Account(int id, int userId, double moneyAmount) {
+        this.id = id;
         this.userId = userId;
         this.moneyAmount = moneyAmount;
+    }
+
+    public Account(int id, int userId) {
+        this.id = id;
+        this.userId = userId;
+        this.moneyAmount = 0;
     }
 
     @Override

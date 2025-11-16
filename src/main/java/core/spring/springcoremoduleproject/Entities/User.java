@@ -1,22 +1,17 @@
 package core.spring.springcoremoduleproject.Entities;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-@Scope("prototype")
 public class User {
+
     private final int id;
-    private static int idQuantity = 0;
     private final String login;
     private final List<Account> accountList = new ArrayList<>();
 
-    public User(String login, double firstAccountDefaultAmount) {
-        this.id = ++idQuantity;
+    public User(int id, String login) {
+        this.id = id;
         this.login = login;
-        accountList.add(new Account(id, firstAccountDefaultAmount));
     }
 
     @Override

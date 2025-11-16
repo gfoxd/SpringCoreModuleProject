@@ -1,6 +1,7 @@
 package core.spring.springcoremoduleproject.Services;
 
 import core.spring.springcoremoduleproject.Entities.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -8,17 +9,20 @@ import java.util.List;
 
 @Service
 public class UserService {
-    private final List<User> userList;
+    private final List<User> userList = new ArrayList<>();
+    private int nextUserId = 1;
     @Value("${account.default-amount}")
     private double defaultAmount;
 
-    public UserService() {
-        this.userList = new ArrayList<>();
-    }
+    @Autowired
+    private AccountService accountService;
 
     public void createUser(String login) {
         if (findUserByLogin(login)) {
-            userList.add(new User(login, defaultAmount));
+            User newUser = new User(nextUserId++, login);
+
+            userList.add(newUser);
+            accountService.createAccountNewUser(newUser.getId());
         } else {
             System.out.println("Пользователь с таким логином уже существует");
         }

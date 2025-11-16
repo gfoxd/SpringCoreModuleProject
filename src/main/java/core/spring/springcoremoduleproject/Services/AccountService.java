@@ -2,6 +2,7 @@ package core.spring.springcoremoduleproject.Services;
 
 import core.spring.springcoremoduleproject.Entities.Account;
 import core.spring.springcoremoduleproject.Entities.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +13,25 @@ public class AccountService {
     @Value("${account.transfer-commission}")
     private double commission;
 
-    public void createAccount(User user) {
-        double initialAmount = user.getAccountList().isEmpty() ? defaultAmount : 0.0;
-        Account newAccount = new Account(user.getId(), initialAmount);
-        user.getAccountList().add(newAccount);
+    private int nextAccountId = 1;
+
+    @Autowired
+    private UserService userService;
+
+    public void createAccountNewUser(int userId) {
+        Account newAccount = new Account(nextAccountId++, userId, defaultAmount);
+        User user = userService.findUserById(userId);
+        if (user != null) {
+            user.getAccountList().add(newAccount);
+        }
     }
+
+    public void createAccount(int userId) {
+        Account newAccount = new Account(nextAccountId++, userId);
+        User user = userService.findUserById(userId);
+        if (user != null) {
+            user.getAccountList().add(newAccount);
+        }
+    }
+
 }
